@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #task-form {
+            margin-bottom: 20px;
+        }
+        #task-input {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            width: calc(100% - 120px);
+            box-sizing: border-box;
+        }
+        #add-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: rgb(179, 17, 219);
+            color: white;
+            cursor: pointer;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .task.completed {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+        .remove-btn {
+            background-color: rgb(223, 102, 172);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            cursor: pointer;
+        }
+        .toggle-btn {
+            background-color: #f0a5bc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Minha Lista de Tarefas</h1>
+    
+    <div id="task-form">
+        <input type="text" id="task-input" placeholder="Digite uma nova tarefa">
+        <button id="add-btn">Adicionar</button>
+    </div>
+    
+    <ul id="task-list">
+    </ul>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const taskList = document.getElementById('task-list');
+            const taskInput = document.getElementById('task-input');
+            const addBtn = document.getElementById('add-btn');
+
+            function createTaskElement(taskText) {
+                const li = document.createElement('li');
+                li.className = 'task';
+                
+                const span = document.createElement('span');
+                span.textContent = taskText;
+                
+                const toggleBtn = document.createElement('button');
+                toggleBtn.className = 'toggle-btn';
+                toggleBtn.textContent = 'Concluir';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = 'Remover';
+                
+                li.appendChild(span);
+                li.appendChild(toggleBtn);
+                li.appendChild(removeBtn);
+                
+                return li;
+            }
+
+            addBtn.addEventListener('click', function() {
+                const taskText = taskInput.value.trim();
+                if (taskText) {
+                    const taskElement = createTaskElement(taskText);
+                    taskList.appendChild(taskElement);
+                    taskInput.value = ''; // Limpar o campo de entrada
+                }
+            });
+
+            taskList.addEventListener('click', function(event) {
+                if (event.target.classList.contains('remove-btn')) {
+                    const taskItem = event.target.parentElement;
+                    taskList.removeChild(taskItem);
+                } else if (event.target.classList.contains('toggle-btn')) {
+                    const taskItem = event.target.parentElement;
+                    taskItem.classList.toggle('completed');
+                    event.target.textContent = taskItem.classList.contains('completed') ? 'Desmarcar' : 'Concluir';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
